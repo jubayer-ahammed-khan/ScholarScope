@@ -4,79 +4,129 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Scholarship Portal</title>
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Extra minor custom styling */
-    body {
-      font-family: 'Inter', sans-serif;
+    body { font-family: 'Inter', sans-serif; }
+    .bg-hero { 
+      background: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1470&q=80') no-repeat center center; 
+      background-size: cover;
+    }
+    .fade-in { 
+      animation: fadeIn 1s ease-in-out forwards;
+      opacity: 0;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
     }
   </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
 
   <!-- Header -->
-  <header class="bg-blue-600 text-white p-4 sticky top-0 z-50 shadow">
-    <div class="max-w-6xl mx-auto flex justify-between items-center">
-      <h1 class="text-2xl font-bold">Scholarship Portal</h1>
-      <nav>
-        <a href="login.html" class="px-4 py-2 bg-white text-blue-600 rounded hover:bg-gray-200 transition">Login</a>
-      </nav>
+  <header class="bg-white shadow-md fixed w-full z-50">
+    <div class="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
+      <h1 class="text-2xl font-bold text-blue-600">Scholarship Portal</h1>
+      <a href="login.html" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Login</a>
     </div>
   </header>
 
   <!-- Hero Section -->
-  <section class="text-center p-12 bg-gradient-to-r from-blue-400 to-blue-600 text-white">
-    <h2 class="text-4xl md:text-5xl font-bold mb-4">Find Global Scholarships Easily</h2>
-    <p class="text-lg md:text-xl mb-6">Login to explore detailed scholarship guidelines and official application links.</p>
-    <button onclick="window.location.href='login.html'" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition">
-      Login to Explore
-    </button>
-  </section>
-
-  <!-- Scholarship Cards Section -->
-  <section class="max-w-6xl mx-auto p-8">
-    <h3 class="text-2xl font-semibold mb-6">Available Scholarships</h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="scholarship-cards">
-      <!-- JS will insert scholarship cards here -->
+  <section class="bg-hero h-screen flex items-center justify-center text-center text-white relative">
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="relative z-10 max-w-3xl px-4 fade-in">
+      <h2 class="text-4xl md:text-6xl font-bold mb-4">Unlock Global Scholarships</h2>
+      <p class="text-lg md:text-xl mb-8">Explore scholarships like Erasmus, DAAD, Fulbright, and more. Apply through official portals.</p>
+      <a href="login.html" class="bg-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">Get Started</a>
     </div>
   </section>
 
-  <script>
-    // Simulate login state
-    const isLoggedIn = false;
+  <!-- Scholarships Section -->
+  <section class="py-16">
+    <div class="max-w-6xl mx-auto px-4">
+      <h3 class="text-3xl font-semibold mb-8 text-gray-800 text-center">Featured Scholarships</h3>
+      <div id="scholarships" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- JS will inject scholarship cards here -->
+      </div>
+    </div>
+  </section>
 
+  <!-- Paid Services Section -->
+  <section class="py-16 bg-gray-100">
+    <div class="max-w-6xl mx-auto px-4">
+      <h3 class="text-3xl font-semibold mb-8 text-gray-800 text-center">Our Paid Services</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-2">
+          <h4 class="text-xl font-bold mb-2">SOP Review</h4>
+          <p class="text-gray-600 mb-4">Get personalized guidance and feedback on your Statement of Purpose.</p>
+          <button onclick="requireLogin()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Book Now</button>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-2">
+          <h4 class="text-xl font-bold mb-2">Profile Assessment</h4>
+          <p class="text-gray-600 mb-4">Evaluate your academic profile to maximize scholarship chances.</p>
+          <button onclick="requireLogin()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Book Now</button>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-2">
+          <h4 class="text-xl font-bold mb-2">Consulting & Application Help</h4>
+          <p class="text-gray-600 mb-4">Get support to apply through our guidance and paid services.</p>
+          <button onclick="requireLogin()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Book Now</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white shadow-inner py-6 mt-16">
+    <div class="max-w-7xl mx-auto text-center text-gray-600">
+      &copy; 2026 Scholarship Portal. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- JS: Dynamic Scholarships + Login Check -->
+  <script>
     const scholarships = [
-      { name: "Fulbright Scholarship", url: "https://us.fulbrightonline.org/" },
-      { name: "Chevening Scholarship", url: "https://www.chevening.org/" },
-      { name: "DAAD Scholarship", url: "https://www.daad.de/en/" },
-      { name: "Erasmus Mundus", url: "https://erasmus-plus.ec.europa.eu/" },
-      { name: "Commonwealth Scholarship", url: "https://cscuk.fcdo.gov.uk/" },
-      { name: "Rhodes Scholarship", url: "https://www.rhodeshouse.ox.ac.uk/" }
+      { title: "Erasmus Mundus", country: "Europe", category: "Masters/PhD", url: "https://erasmus-plus.ec.europa.eu/opportunities" },
+      { title: "DAAD Scholarship", country: "Germany", category: "Masters/PhD", url: "https://www.daad.de/en/" },
+      { title: "Chevening", country: "UK", category: "Masters", url: "https://www.chevening.org/" },
+      { title: "Fulbright", country: "USA", category: "Masters/PhD", url: "https://foreign.fulbrightonline.org/" },
+      { title: "Commonwealth", country: "UK/Other", category: "Undergraduate/Postgraduate", url: "https://www.acu.ac.uk/scholarships/" }
     ];
 
-    const container = document.getElementById('scholarship-cards');
+    const container = document.getElementById("scholarships");
 
     scholarships.forEach(s => {
-      const card = document.createElement('div');
-      card.className = "bg-white p-6 rounded-lg shadow hover:shadow-lg transition flex flex-col justify-between";
+      const card = document.createElement("div");
+      card.className = "bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-2";
       card.innerHTML = `
-        <h4 class="text-xl font-semibold mb-4">${s.name}</h4>
-        <p class="text-gray-600 mb-4">Explore the scholarship guidelines and official application website.</p>
-        <button class="mt-auto bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-          onclick="learnMore('${s.url}')">Learn More</button>
+        <h4 class="text-xl font-bold mb-2">${s.title}</h4>
+        <p class="text-gray-600 mb-2">Country: ${s.country}</p>
+        <p class="text-gray-600 mb-4">Category: ${s.category}</p>
+        <button onclick="handleLearnMore('${s.url}')" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Learn More</button>
       `;
       container.appendChild(card);
     });
 
-    function learnMore(url) {
-      if(isLoggedIn) {
-        window.open(url, "_blank");
-      } else {
-        alert("Please login to view this scholarship!");
+    function handleLearnMore(url) {
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      if(!isLoggedIn) {
+        alert("Please login first!");
         window.location.href = "login.html";
+      } else {
+        window.open(url, "_blank");
+      }
+    }
+
+    function requireLogin() {
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      if(!isLoggedIn) {
+        alert("Please login to book services!");
+        window.location.href = "login.html";
+      } else {
+        alert("Service booking coming soon!");
       }
     }
   </script>
-
 </body>
 </html>

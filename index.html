@@ -2,17 +2,81 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Scholarship Management System</title>
-
-  <!-- Tailwind CSS CDN -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scholarship Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
+  <style>
+    /* Extra minor custom styling */
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
 </head>
 <body class="bg-gray-100">
 
-  <h1 class="text-3xl font-bold text-center mt-10 text-blue-600">
-    ScholarScope
-  </h1>
+  <!-- Header -->
+  <header class="bg-blue-600 text-white p-4 sticky top-0 z-50 shadow">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Scholarship Portal</h1>
+      <nav>
+        <a href="login.html" class="px-4 py-2 bg-white text-blue-600 rounded hover:bg-gray-200 transition">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="text-center p-12 bg-gradient-to-r from-blue-400 to-blue-600 text-white">
+    <h2 class="text-4xl md:text-5xl font-bold mb-4">Find Global Scholarships Easily</h2>
+    <p class="text-lg md:text-xl mb-6">Login to explore detailed scholarship guidelines and official application links.</p>
+    <button onclick="window.location.href='login.html'" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition">
+      Login to Explore
+    </button>
+  </section>
+
+  <!-- Scholarship Cards Section -->
+  <section class="max-w-6xl mx-auto p-8">
+    <h3 class="text-2xl font-semibold mb-6">Available Scholarships</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="scholarship-cards">
+      <!-- JS will insert scholarship cards here -->
+    </div>
+  </section>
+
+  <script>
+    // Simulate login state
+    const isLoggedIn = false;
+
+    const scholarships = [
+      { name: "Fulbright Scholarship", url: "https://us.fulbrightonline.org/" },
+      { name: "Chevening Scholarship", url: "https://www.chevening.org/" },
+      { name: "DAAD Scholarship", url: "https://www.daad.de/en/" },
+      { name: "Erasmus Mundus", url: "https://erasmus-plus.ec.europa.eu/" },
+      { name: "Commonwealth Scholarship", url: "https://cscuk.fcdo.gov.uk/" },
+      { name: "Rhodes Scholarship", url: "https://www.rhodeshouse.ox.ac.uk/" }
+    ];
+
+    const container = document.getElementById('scholarship-cards');
+
+    scholarships.forEach(s => {
+      const card = document.createElement('div');
+      card.className = "bg-white p-6 rounded-lg shadow hover:shadow-lg transition flex flex-col justify-between";
+      card.innerHTML = `
+        <h4 class="text-xl font-semibold mb-4">${s.name}</h4>
+        <p class="text-gray-600 mb-4">Explore the scholarship guidelines and official application website.</p>
+        <button class="mt-auto bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          onclick="learnMore('${s.url}')">Learn More</button>
+      `;
+      container.appendChild(card);
+    });
+
+    function learnMore(url) {
+      if(isLoggedIn) {
+        window.open(url, "_blank");
+      } else {
+        alert("Please login to view this scholarship!");
+        window.location.href = "login.html";
+      }
+    }
+  </script>
 
 </body>
 </html>

@@ -1,132 +1,348 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scholarship Portal</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-    .bg-hero { 
-      background: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1470&q=80') no-repeat center center; 
-      background-size: cover;
-    }
-    .fade-in { 
-      animation: fadeIn 1s ease-in-out forwards;
-      opacity: 0;
-    }
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarScope | Your Gateway to Global Opportunities</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #030712; color: #f3f4f6; overflow-x: hidden; }
+        
+        /* Animated Gradient Background */
+        .bg-mesh {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #030712 100%);
+        }
+
+        /* Floating Blobs */
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 20s infinite alternate;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100px, 50px) scale(1.1); }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-glow {
+            position: relative;
+            transition: all 0.3s;
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+            transform: scale(1.02);
+        }
+
+        .nav-scrolled {
+            background: rgba(3, 7, 18, 0.8);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #818cf8, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
 </head>
-<body class="bg-gray-50">
+<body>
 
-  <!-- Header -->
-  <header class="bg-white shadow-md fixed w-full z-50">
-    <div class="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
-      <h1 class="text-2xl font-bold text-blue-600">Scholarship Portal</h1>
-      <a href="login.html" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Login</a>
-    </div>
-  </header>
+    <div class="bg-mesh"></div>
+    <div class="blob" style="top: -10%; left: -10%;"></div>
+    <div class="blob" style="bottom: -10%; right: -10%; animation-delay: -5s;"></div>
 
-  <!-- Hero Section -->
-  <section class="bg-hero h-screen flex items-center justify-center text-center text-white relative">
-    <div class="absolute inset-0 bg-black/50"></div>
-    <div class="relative z-10 max-w-3xl px-4 fade-in">
-      <h2 class="text-4xl md:text-6xl font-bold mb-4">Unlock Global Scholarships</h2>
-      <p class="text-lg md:text-xl mb-8">Explore scholarships like Erasmus, DAAD, Fulbright, and more. Apply through official portals.</p>
-      <a href="login.html" class="bg-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">Get Started</a>
-    </div>
-  </section>
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-6">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="text-2xl font-extrabold tracking-tighter flex items-center">
+                <span class="text-white">Scholar</span><span class="gradient-text">Scope</span>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-300">
+                <a href="#features" class="hover:text-white transition">Opportunities</a>
+                <a href="#services" class="hover:text-white transition">Services</a>
+                <a href="#why-us" class="hover:text-white transition">Why Us</a>
+            </div>
 
-  <!-- Scholarships Section -->
-  <section class="py-16">
-    <div class="max-w-6xl mx-auto px-4">
-      <h3 class="text-3xl font-semibold mb-8 text-gray-800 text-center">Featured Scholarships</h3>
-      <div id="scholarships" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- JS will inject scholarship cards here -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Paid Services Section -->
-  <section class="py-16 bg-gray-100">
-    <div class="max-w-6xl mx-auto px-4">
-      <h3 class="text-3xl font-semibold mb-8 text-gray-800 text-center">Our Paid Services</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-2">
-          <h4 class="text-xl font-bold mb-2">SOP Review</h4>
-          <p class="text-gray-600 mb-4">Get personalized guidance and feedback on your Statement of Purpose.</p>
-          <button onclick="requireLogin()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Book Now</button>
+            <div class="flex items-center space-x-4">
+                <button class="px-5 py-2 text-sm font-medium border border-white/10 rounded-full hover:bg-white/5 transition">Login</button>
+                <button class="px-6 py-2 text-sm font-medium bg-indigo-600 rounded-full btn-glow text-white shadow-lg shadow-indigo-500/20">Register</button>
+            </div>
         </div>
-        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-2">
-          <h4 class="text-xl font-bold mb-2">Profile Assessment</h4>
-          <p class="text-gray-600 mb-4">Evaluate your academic profile to maximize scholarship chances.</p>
-          <button onclick="requireLogin()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Book Now</button>
+    </nav>
+
+    <section class="relative pt-44 pb-32 overflow-hidden">
+        <div class="container mx-auto px-6 text-center lg:text-left flex flex-col lg:flex-row items-center">
+            <div class="lg:w-1/2" data-aos="fade-up" data-aos-duration="1000">
+            
+                <h1 class="text-5xl lg:text-7xl font-extrabold leading-tight mb-6">
+                    Unlock Global <br>
+                    <span class="gradient-text">Scholarships</span> & Study Abroad
+                </h1>
+                <p class="text-xl text-gray-400 mb-10 max-w-xl leading-relaxed">
+                    They’re Waiting to Give You Scholarships. Stop Paying from your pocket. Start Winning Scholarships.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <button class="px-8 py-4 bg-indigo-600 rounded-xl font-bold btn-glow flex items-center justify-center">
+                        Explore Opportunities 
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </button>
+                    <button class="px-8 py-4 glass-card rounded-xl font-bold">Join Community</button>
+                </div>
+            </div>
+            
+            <div class="lg:w-1/2 mt-16 lg:mt-0 relative" data-aos="zoom-in" data-aos-delay="200">
+                
+                    <img src="https://collegesofdistinction.com/wp-content/uploads/2018/08/scholarships-.jpeg" alt="Dashboard Preview" class="rounded-2xl shadow-2xl">
+                   
+                       
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-2">
-          <h4 class="text-xl font-bold mb-2">Consulting & Application Help</h4>
-          <p class="text-gray-600 mb-4">Get support to apply through our guidance and paid services.</p>
-          <button onclick="requireLogin()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Book Now</button>
+    </section>
+
+    <section class="py-12 border-y border-white/5 bg-white/2">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div data-aos="fade-up">
+                    <p class="text-3xl font-bold gradient-text counter" data-target="5000">0</p>
+                    <p class="text-sm text-gray-400 uppercase tracking-widest mt-1">Students Guided</p>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <p class="text-3xl font-bold gradient-text counter" data-target="300">0</p>
+                    <p class="text-sm text-gray-400 uppercase tracking-widest mt-1">Scholarships Shared</p>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <p class="text-3xl font-bold gradient-text counter" data-target="50">0</p>
+                    <p class="text-sm text-gray-400 uppercase tracking-widest mt-1">Countries Covered</p>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="300">
+                    <p class="text-3xl font-bold gradient-text">Global</p>
+                    <p class="text-sm text-gray-400 uppercase tracking-widest mt-1">Network</p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer class="bg-white shadow-inner py-6 mt-16">
-    <div class="max-w-7xl mx-auto text-center text-gray-600">
-      &copy; 2026 Scholarship Portal. All rights reserved.
-    </div>
-  </footer>
+    <section id="features" class="py-32 container mx-auto px-6">
+        <div class="text-center mb-20" data-aos="fade-up">
+            <h2 class="text-4xl font-bold mb-4">Explore Scholarships & Programs</h2>
+            <p class="text-gray-400">Curated opportunities specifically for Bangladeshi applicants.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div onclick="alert('Login Now to Access Full Details')" class="glass-card p-8 rounded-3xl cursor-pointer group" data-aos="fade-up">
+                <div class="w-12 h-12 bg-indigo-500/20 rounded-xl mb-6 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition">🎓</div>
+                <h3 class="text-xl font-bold mb-3">Fully Funded</h3>
+                <p class="text-sm text-gray-400 mb-6 leading-relaxed">PhD & Masters programs with full tuition and monthly stipends.</p>
+                <div class="text-xs font-mono text-indigo-300 mb-6 bg-indigo-300/10 p-2 rounded">800+ Programs</div>
+                <button class="w-full py-3 bg-white/5 rounded-xl text-sm font-semibold hover:bg-white/10 transition">View Details</button>
+            </div>
+            <div onclick="alert('Login Now to Access Full Details')" class="glass-card p-8 rounded-3xl cursor-pointer group" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-12 h-12 bg-cyan-500/20 rounded-xl mb-6 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition">🌍</div>
+                <h3 class="text-xl font-bold mb-3">Erasmus+</h3>
+                <p class="text-sm text-gray-400 mb-6 leading-relaxed">European mobility programs for undergraduate & exchange students.</p>
+                <div class="text-xs font-mono text-cyan-300 mb-6 bg-cyan-300/10 p-2 rounded">200+ Programs</div>
+                <button class="w-full py-3 bg-white/5 rounded-xl text-sm font-semibold hover:bg-white/10 transition">Explore</button>
+            </div>
+            <div onclick="alert('Login Now to Access Full Details')" class="glass-card p-8 rounded-3xl cursor-pointer group" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-12 h-12 bg-purple-500/20 rounded-xl mb-6 flex items-center justify-center text-purple-400 group-hover:scale-110 transition">🏛️</div>
+                <h3 class="text-xl font-bold mb-3">Government</h3>
+                <p class="text-sm text-gray-400 mb-6 leading-relaxed">Commonwealth, Fulbright, and MEXT government-backed grants.</p>
+                <div class="text-xs font-mono text-purple-300 mb-6 bg-purple-300/10 p-2 rounded">USA, UK, Japan and more </div>
+                <button class="w-full py-3 bg-white/5 rounded-xl text-sm font-semibold hover:bg-white/10 transition">Check Eligibility</button>
+            </div>
+            <div onclick="alert('Login Now to Access Full Details')" class="glass-card p-8 rounded-3xl cursor-pointer group" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-12 h-12 bg-orange-500/20 rounded-xl mb-6 flex items-center justify-center text-orange-400 group-hover:scale-110 transition">☀️</div>
+                <h3 class="text-xl font-bold mb-3">Summer School</h3>
+                <p class="text-sm text-gray-400 mb-6 leading-relaxed">Short-term academic and leadership programs for global exposure.</p>
+                <div class="text-xs font-mono text-orange-300 mb-6 bg-orange-300/10 p-2 rounded">Duration: 2-4 Weeks</div>
+                <button class="w-full py-3 bg-white/5 rounded-xl text-sm font-semibold hover:bg-white/10 transition">Apply Now</button>
+            </div>
+        </div>
+    </section>
 
-  <!-- JS: Dynamic Scholarships + Login Check -->
-  <script>
-    const scholarships = [
-      { title: "Erasmus Mundus", country: "Europe", category: "Masters/PhD", url: "https://erasmus-plus.ec.europa.eu/opportunities" },
-      { title: "DAAD Scholarship", country: "Germany", category: "Masters/PhD", url: "https://www.daad.de/en/" },
-      { title: "Chevening", country: "UK", category: "Masters", url: "https://www.chevening.org/" },
-      { title: "Fulbright", country: "USA", category: "Masters/PhD", url: "https://foreign.fulbrightonline.org/" },
-      { title: "Commonwealth", country: "UK/Other", category: "Undergraduate/Postgraduate", url: "https://www.acu.ac.uk/scholarships/" }
-    ];
+    <section id="services" class="py-32 bg-white/2">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20" data-aos="fade-up">
+                <h2 class="text-4xl font-bold mb-4">ScholarScope Premium</h2>
+                <p class="text-gray-400">White-glove service to guarantee your global success.</p>
+            </div>
 
-    const container = document.getElementById("scholarships");
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="glass-card p-10 rounded-3xl flex items-start space-x-6 overflow-hidden relative group" data-aos="fade-right">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 -mr-16 -mt-16 rounded-full group-hover:scale-150 transition duration-700"></div>
+                    <div class="text-4xl">📝</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">SOP & Essay Review</h3>
+                        <p class="text-gray-400 mb-6">Our experts refine your Statement of Purpose to meet Ivy League standards.</p>
+                        <button class="text-indigo-400 font-bold hover:text-indigo-300 transition flex items-center">Get Started <span class="ml-2">→</span></button>
+                    </div>
+                </div>
+                <div class="glass-card p-10 rounded-3xl flex items-start space-x-6 overflow-hidden relative group" data-aos="fade-left">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 -mr-16 -mt-16 rounded-full group-hover:scale-150 transition duration-700"></div>
+                    <div class="text-4xl">📊</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">Profile Assessment</h3>
+                        <p class="text-gray-400 mb-6">In-depth analysis of your CGPA and extra-curriculars for target matching.</p>
+                        <button class="text-cyan-400 font-bold hover:text-cyan-300 transition flex items-center">Book Session <span class="ml-2">→</span></button>
+                    </div>
+                </div>
+                <div class="glass-card p-10 rounded-3xl flex items-start space-x-6 overflow-hidden relative group" data-aos="fade-right">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 -mr-16 -mt-16 rounded-full group-hover:scale-150 transition duration-700"></div>
+                    <div class="text-4xl">🤝</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">1-on-1 Consultation</h3>
+                        <p class="text-gray-400 mb-6">Personalized roadmap sessions with alumni from world-renowned universities.</p>
+                        <button class="text-purple-400 font-bold hover:text-purple-300 transition flex items-center">Talk to Expert <span class="ml-2">→</span></button>
+                    </div>
+                </div>
+                <div class="glass-card p-10 rounded-3xl flex items-start space-x-6 overflow-hidden relative group" data-aos="fade-left">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 -mr-16 -mt-16 rounded-full group-hover:scale-150 transition duration-700"></div>
+                    <div class="text-4xl">🚀</div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">End-to-End Filing</h3>
+                        <p class="text-gray-400 mb-6">We handle the entire application process while you focus on your exams.</p>
+                        <button class="text-emerald-400 font-bold hover:text-emerald-300 transition flex items-center">Secure My Seat <span class="ml-2">→</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    scholarships.forEach(s => {
-      const card = document.createElement("div");
-      card.className = "bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-2";
-      card.innerHTML = `
-        <h4 class="text-xl font-bold mb-2">${s.title}</h4>
-        <p class="text-gray-600 mb-2">Country: ${s.country}</p>
-        <p class="text-gray-600 mb-4">Category: ${s.category}</p>
-        <button onclick="handleLearnMore('${s.url}')" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Learn More</button>
-      `;
-      container.appendChild(card);
-    });
+    <section class="py-32">
+        <div class="container mx-auto px-6">
+            <div class="relative p-16 rounded-[3rem] overflow-hidden text-center" data-aos="zoom-in">
+                <div class="absolute inset-0 bg-gradient-to-br from-indigo-900 via-indigo-800 to-indigo-900 opacity-90 -z-10"></div>
+                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 -z-10"></div>
+                
+                <h2 class="text-4xl lg:text-5xl font-extrabold mb-8">Start Your Global Journey Today</h2>
+                <p class="text-xl text-indigo-100/70 mb-10 max-w-2xl mx-auto">
+                    Don't let financial barriers stop your dreams. Thousands of Bangladeshi students already studying abroad with top scholarships. Now it's your turn. Scholarships Are Waiting to Invest in You.
+                </p>
+                <button class="px-10 py-5 bg-white text-indigo-900 rounded-2xl font-black text-lg hover:bg-gray-100 transition shadow-2xl btn-glow">
+                    Create Free Account
+                </button>
+            </div>
+        </div>
+    </section>
 
-    function handleLearnMore(url) {
-      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-      if(!isLoggedIn) {
-        alert("Please login first!");
-        window.location.href = "login.html";
-      } else {
-        window.open(url, "_blank");
-      }
-    }
+    <footer class="pt-24 pb-12 bg-black/40 border-t border-white/5">
+        <div class="container mx-auto px-6">
+            <div class="grid lg:grid-cols-4 gap-12 mb-16" data-aos="fade-up">
+                <div class="col-span-1 lg:col-span-2">
+                    <div class="text-2xl font-extrabold tracking-tighter mb-6">
+                        <span class="text-white">Scholar</span><span class="gradient-text">Scope</span>
+                    </div>
+                    <p class="text-gray-500 max-w-sm mb-8">
+                        The definitive platform for Bangladeshi students to navigate the complex world of global education and funding.
+                    </p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white transition">Facebook</a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">LinkedIn</a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">Twitter</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6">Resources</h4>
+                    <ul class="space-y-4 text-gray-500 text-sm">
+                        <li><a href="#" class="hover:text-white transition">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition">Success Stories</a></li>
+                        <li><a href="#" class="hover:text-white transition">Guidelines</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6">Company</h4>
+                    <ul class="space-y-4 text-gray-500 text-sm">
+                        <li><a href="#" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-white/5 text-center text-gray-600 text-xs">
+                © 2026 ScholarScope Global. All rights reserved. Designed for excellence.
+            </div>
+        </div>
+    </footer>
 
-    function requireLogin() {
-      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-      if(!isLoggedIn) {
-        alert("Please login to book services!");
-        window.location.href = "login.html";
-      } else {
-        alert("Service booking coming soon!");
-      }
-    }
-  </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            easing: 'ease-out-quad'
+        });
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.onscroll = () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled');
+            }
+        };
+
+        // Counter Animation
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200;
+
+        const animateCounters = () => {
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+                    const inc = target / speed;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc);
+                        setTimeout(updateCount, 1);
+                    } else {
+                        counter.innerText = target + '+';
+                    }
+                };
+                updateCount();
+            });
+        };
+
+        // Trigger counter when in view
+        const observer = new IntersectionObserver((entries) => {
+            if(entries[0].isIntersecting) {
+                animateCounters();
+            }
+        }, { threshold: 0.5 });
+        
+        observer.observe(document.querySelector('.counter'));
+    </script>
 </body>
 </html>

@@ -93,7 +93,7 @@
 
             <div class="flex items-center space-x-4">
                 <a href="login.html" class="px-5 py-2 text-sm font-medium border border-white/10 rounded-full hover:bg-white/5 transition">Login</a>
-<a href="login.html" class="px-6 py-2 text-sm font-medium bg-indigo-600 rounded-full btn-glow text-white shadow-lg shadow-indigo-500/20">Register</a>
+<a href="register.html" class="px-6 py-2 text-sm font-medium bg-indigo-600 rounded-full btn-glow text-white shadow-lg shadow-indigo-500/20">Register</a>
             </div>
         </div>
     </nav>
@@ -153,43 +153,45 @@
     </section>
 
     <section id="features" class="py-32 container mx-auto px-6">
-        <div class="text-center mb-20" data-aos="fade-up">
-            <h2 class="text-4xl font-bold mb-4">Explore Scholarships & Programs</h2>
-            <p class="text-gray-400">Curated opportunities specifically for Bangladeshi applicants.</p>
-        </div>
-        
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div onclick="alert('Login Now to Access Full Details')" class="glass-card p-8 rounded-3xl cursor-pointer group" data-aos="fade-up">
-                <div class="w-12 h-12 bg-indigo-500/20 rounded-xl mb-6 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition">🎓</div>
-                <h3 class="text-xl font-bold mb-3">Fully Funded</h3>
-                <p class="text-sm text-gray-400 mb-6 leading-relaxed">PhD & Masters programs with full tuition and monthly stipends.</p>
-                <div class="text-xs font-mono text-indigo-300 mb-6 bg-indigo-300/10 p-2 rounded">800+ Programs</div>
-                <button class="w-full py-3 bg-white/5 rounded-xl text-sm font-semibold hover:bg-white/10 transition">View Details</button>
-            </div>
-            <div onclick="alert('Login Now to Access Full Details')" class="glass-card p-8 rounded-3xl cursor-pointer group" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-12 h-12 bg-cyan-500/20 rounded-xl mb-6 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition">🌍</div>
-                <h3 class="text-xl font-bold mb-3">Erasmus+</h3>
-                <p class="text-sm text-gray-400 mb-6 leading-relaxed">European mobility programs for undergraduate & exchange students.</p>
-                <div class="text-xs font-mono text-cyan-300 mb-6 bg-cyan-300/10 p-2 rounded">200+ Programs</div>
-                <button class="w-full py-3 bg-white/5 rounded-xl text-sm font-semibold hover:bg-white/10 transition">Explore</button>
-            </div>
-            <div onclick="alert('Login Now to Access Full Details')" class="glass-card p-8 rounded-3xl cursor-pointer group" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-12 h-12 bg-purple-500/20 rounded-xl mb-6 flex items-center justify-center text-purple-400 group-hover:scale-110 transition">🏛️</div>
-                <h3 class="text-xl font-bold mb-3">Government</h3>
-                <p class="text-sm text-gray-400 mb-6 leading-relaxed">Commonwealth, Fulbright, and MEXT government-backed grants.</p>
-                <div class="text-xs font-mono text-purple-300 mb-6 bg-purple-300/10 p-2 rounded">USA, UK, Japan and more </div>
-                <button class="w-full py-3 bg-white/5 rounded-xl text-sm font-semibold hover:bg-white/10 transition">Check Eligibility</button>
-            </div>
-            <div onclick="alert('Login Now to Access Full Details')" class="glass-card p-8 rounded-3xl cursor-pointer group" data-aos="fade-up" data-aos-delay="300">
-                <div class="w-12 h-12 bg-orange-500/20 rounded-xl mb-6 flex items-center justify-center text-orange-400 group-hover:scale-110 transition">☀️</div>
-                <h3 class="text-xl font-bold mb-3">Summer School</h3>
-                <p class="text-sm text-gray-400 mb-6 leading-relaxed">Short-term academic and leadership programs for global exposure.</p>
-                <div class="text-xs font-mono text-orange-300 mb-6 bg-orange-300/10 p-2 rounded">Duration: 2-4 Weeks</div>
-                <button class="w-full py-3 bg-white/5 rounded-xl text-sm font-semibold hover:bg-white/10 transition">Apply Now</button>
-            </div>
-        </div>
-    </section>
+    <div class="text-center mb-20" data-aos="fade-up">
+        <h2 class="text-4xl font-bold mb-4">Explore Scholarships & Programs</h2>
+        <p class="text-gray-400">Opportunities specifically for Bangladeshi applicants.</p>
+    </div>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <a href="login.html" class="glass-card p-8 rounded-3xl block group" data-aos="fade-up">
+            <div class="w-12 h-12 bg-indigo-500/20 rounded-xl mb-6 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition">🎓</div>
+            <h3 class="text-xl font-bold mb-3">Fully Funded</h3>
+            <p class="text-sm text-gray-400 mb-6 leading-relaxed">PhD & Masters programs with full tuition and monthly stipends.</p>
+            <div class="text-xs font-mono text-indigo-300 mb-6 bg-indigo-300/10 p-2 rounded">800+ Programs</div>
+            <div class="w-full py-3 bg-white/5 rounded-xl text-sm font-semibold group-hover:bg-indigo-600 group-hover:text-white transition-all text-center">View Details</div>
+        </a>
 
+        <a href="login.html" class="glass-card p-8 rounded-3xl block group" data-aos="fade-up" data-aos-delay="100">
+            <div class="w-12 h-12 bg-cyan-500/20 rounded-xl mb-6 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition">🌍</div>
+            <h3 class="text-xl font-bold mb-3">Erasmus+</h3>
+            <p class="text-sm text-gray-400 mb-6 leading-relaxed">European mobility programs for undergraduate & exchange students.</p>
+            <div class="text-xs font-mono text-cyan-300 mb-6 bg-cyan-300/10 p-2 rounded">200+ Programs</div>
+            <div class="w-full py-3 bg-white/5 rounded-xl text-sm font-semibold group-hover:bg-cyan-600 group-hover:text-white transition-all text-center">Explore</div>
+        </a>
+
+        <a href="login.html" class="glass-card p-8 rounded-3xl block group" data-aos="fade-up" data-aos-delay="200">
+            <div class="w-12 h-12 bg-purple-500/20 rounded-xl mb-6 flex items-center justify-center text-purple-400 group-hover:scale-110 transition">🏛️</div>
+            <h3 class="text-xl font-bold mb-3">Government</h3>
+            <p class="text-sm text-gray-400 mb-6 leading-relaxed">Commonwealth, Fulbright, and MEXT government-backed grants.</p>
+            <div class="text-xs font-mono text-purple-300 mb-6 bg-purple-300/10 p-2 rounded">USA, UK, Japan and more</div>
+            <div class="w-full py-3 bg-white/5 rounded-xl text-sm font-semibold group-hover:bg-purple-600 group-hover:text-white transition-all text-center">Check Eligibility</div>
+        </a>
+
+        <a href="login.html" class="glass-card p-8 rounded-3xl block group" data-aos="fade-up" data-aos-delay="300">
+            <div class="w-12 h-12 bg-orange-500/20 rounded-xl mb-6 flex items-center justify-center text-orange-400 group-hover:scale-110 transition">☀️</div>
+            <h3 class="text-xl font-bold mb-3">Summer School</h3>
+            <p class="text-sm text-gray-400 mb-6 leading-relaxed">Short-term academic and leadership programs for global exposure.</p>
+            <div class="text-xs font-mono text-orange-300 mb-6 bg-orange-300/10 p-2 rounded">Duration: 2-4 Weeks</div>
+            <div class="w-full py-3 bg-white/5 rounded-xl text-sm font-semibold group-hover:bg-orange-600 group-hover:text-white transition-all text-center">Apply Now</div>
+        </a>
+    </div>
+</section>
     <section id="services" class="py-32 bg-white/2">
         <div class="container mx-auto px-6">
             <div class="text-center mb-20" data-aos="fade-up">

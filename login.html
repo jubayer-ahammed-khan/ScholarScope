@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | ScholarScope</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #030712; color: #f3f4f6; }
+        
+        .bg-mesh {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 20% 30%, #1e1b4b 0%, #030712 100%);
+        }
+
+        .blob {
+            position: absolute;
+            width: 400px; height: 400px;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
+            animation: move 15s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(0, 0); }
+            to { transform: translate(50px, 100px); }
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-field {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+            outline: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+
+    <div class="bg-mesh"></div>
+    <div class="blob"></div>
+
+    <div class="mb-8 fade-in">
+        <a href="index.html" class="text-2xl font-extrabold tracking-tighter flex items-center justify-center">
+            <span class="text-white">Scholar</span><span class="text-indigo-400">Scope</span>
+        </a>
+    </div>
+
+    <div class="login-card w-full max-w-md p-8 rounded-[2rem] fade-in">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-white mb-2">Welcome</h1>
+            <p class="text-gray-400 text-sm">Access global scholarship opportunities</p>
+        </div>
+
+        <form action="#" class="space-y-6" onsubmit="return handleLogin(event)">
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2 ml-1">Email Address</label>
+                <input type="email" required placeholder="name@email.com" 
+                    class="input-field w-full px-5 py-4 rounded-xl text-white placeholder-gray-500">
+            </div>
+
+            <div>
+                <div class="flex justify-between items-center mb-2">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 ml-1">Password</label>
+                    <a href="#" class="text-xs text-indigo-400 hover:text-indigo-300 transition">Forgot?</a>
+                </div>
+                <input type="password" required placeholder="••••••••" 
+                    class="input-field w-full px-5 py-4 rounded-xl text-white placeholder-gray-500">
+            </div>
+
+            <div class="flex items-center">
+                <input type="checkbox" id="remember" class="w-4 h-4 rounded border-gray-700 bg-gray-800 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-gray-900">
+                <label for="remember" class="ml-2 text-sm text-gray-400 cursor-pointer select-none">Keep me logged in</label>
+            </div>
+
+            <button type="submit" class="btn-primary w-full py-4 rounded-xl font-bold text-white text-lg">
+                Sign In
+            </button>
+        </form>
+
+        <div class="mt-10 pt-8 border-t border-white/5 text-center">
+            <p class="text-gray-400 text-sm">
+                Don't have an account? 
+                <a href="#" class="text-white font-bold hover:text-indigo-400 transition ml-1">Sign up now</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="mt-8 flex space-x-6 text-xs text-gray-500 fade-in">
+        <a href="#" class="hover:text-white transition">Privacy Policy</a>
+        <a href="#" class="hover:text-white transition">Help Center</a>
+        <a href="index.html" class="hover:text-white transition">Back to Home</a>
+    </div>
+
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+            
+            // UX: Visual feedback without popups
+            btn.innerText = "Authenticating...";
+            btn.style.opacity = "0.7";
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btn.innerText = "Redirecting...";
+                // In a real app, logic would go here
+                // window.location.href = 'dashboard.html';
+            }, 1500);
+            
+            return false;
+        }
+    </script>
+</body>
+</html>

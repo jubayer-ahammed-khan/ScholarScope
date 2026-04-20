@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | ScholarScope</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #030712; color: #f3f4f6; }
+        .bg-mesh { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #030712 100%); }
+        .glass-card { background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; }
+        .glass-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); }
+        .input-field { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; color: white; }
+        .input-field:focus { border-color: #6366f1; outline: none; box-shadow: 0 0 0 2px rgba(99,102,241,0.2); }
+        .gradient-text { background: linear-gradient(to right, #818cf8, #22d3ee); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .badge { padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+        .tab-btn.active { background: rgba(99,102,241,0.3); border-color: rgba(99,102,241,0.5); color: white; }
+        .fade-in { animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+        .modal-scroll { max-height: 85vh; overflow-y: auto; }
+        .modal-scroll::-webkit-scrollbar { width: 4px; }
+        .modal-scroll::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 2px; }
+     /* Fix dropdown colors */
+select.input-field option {
+    background-color: #0f172a;
+    color: #f3f4f6;
+}
+select.input-field {
+    color: #9ca3af;
+}
+    </style>
+</head>
+<body>
+    <div class="bg-mesh"></div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 bg-black/40 backdrop-blur-lg border-b border-white/5 py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-extrabold tracking-tighter">
+                <span class="text-white">Scholar</span><span class="gradient-text">Scope</span>
+                <span class="ml-2 text-xs bg-red-500/20 text-red-400 border border-red-500/20 px-2 py-1 rounded-full">Admin</span>
+            </a>
+            <button onclick="logout()" class="px-5 py-2 text-sm font-medium bg-red-600/20 border border-red-500/20 rounded-full hover:bg-red-600/30 transition text-red-400">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-6 pt-28 pb-16">
+
+        <!-- Header -->
+        <div class="mb-8 fade-in flex justify-between items-start flex-wrap gap-4">
+    <div>
+        <h1 class="text-3xl font-extrabold mb-1">Admin <span class="gradient-text">Dashboard</span> ⚙️</h1>
+        <p class="text-gray-400">Manage scholarships, users, applications and payments</p>
+    </div>
+    <button onclick="runScraper()" id="scrapeBtn"
+        class="px-6 py-3 bg-cyan-600/20 border border-cyan-500/30 text-cyan-400 rounded-xl font-bold hover:bg-cyan-600/30 transition text-sm">
+        🔄 Scrape New Scholarships
+    </button>
+</div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 fade-in">
+            <div class="glass-card p-5 rounded-2xl text-center">
+                <p class="text-3xl font-bold gradient-text" id="totalScholarships">0</p>
+                <p class="text-xs text-gray-400 mt-1">Scholarships</p>
+            </div>
+            <div class="glass-card p-5 rounded-2xl text-center">
+                <p class="text-3xl font-bold text-cyan-400" id="totalUsers">0</p>
+                <p class="text-xs text-gray-400 mt-1">Students</p>
+            </div>
+            <div class="glass-card p-5 rounded-2xl text-center">
+                <p class="text-3xl font-bold text-yellow-400" id="totalApplications">0</p>
+                <p class="text-xs text-gray-400 mt-1">Applications</p>
+            </div>
+            <div class="glass-card p-5 rounded-2xl text-center">
+                <p class="text-3xl font-bold text-green-400" id="totalPayments">0</p>
+                <p class="text-xs text-gray-400 mt-1">Service Requests</p>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex gap-3 mb-6 flex-wrap fade-in">
+            <button onclick="showTab('scholarships')" class="tab-btn active px-5 py-2 rounded-full border border-white/10 text-sm font-medium" id="tab-scholarships">🎓 Scholarships</button>
+            <button onclick="showTab('applications')" class="tab-btn px-5 py-2 rounded-full border border-white/10 text-sm font-medium text-gray-400" id="tab-applications">📋 Applications</button>
+            <button onclick="showTab('users')" class="tab-btn px-5 py-2 rounded-full border border-white/10 text-sm font-medium text-gray-400" id="tab-users">👥 Students</button>
+            <button onclick="showTab('payments')" class="tab-btn px-5 py-2 rounded-full border border-white/10 text-sm font-medium text-gray-400" id="tab-payments">💳 Payments</button>
+            <button onclick="showTab('add')" class="tab-btn px-5 py-2 rounded-full border border-white/10 text-sm font-medium text-gray-400" id="tab-add">➕ Add Scholarship</button>
+        </div>
+
+        <!-- Scholarships Tab -->
+        <div id="scholarships-tab" class="fade-in">
+            <div class="glass-card p-4 rounded-2xl mb-4">
+                <input type="text" id="scholarshipSearch" placeholder="🔍 Search scholarships..."
+                    class="input-field w-full px-4 py-3 rounded-xl" oninput="filterAdminScholarships()">
+            </div>
+            <div id="adminScholarshipsList" class="space-y-3">
+                <div class="text-center text-gray-400 py-8">Loading...</div>
+            </div>
+        </div>
+
+        <!-- Applications Tab -->
+        <div id="applications-tab" class="hidden fade-in">
+            <div class="glass-card p-4 rounded-2xl mb-4">
+                <input type="text" id="appSearch" placeholder="🔍 Search by student or scholarship..."
+                    class="input-field w-full px-4 py-3 rounded-xl" oninput="filterApplications()">
+            </div>
+            <div id="adminApplicationsList" class="space-y-3">
+                <div class="text-center text-gray-400 py-8">Loading...</div>
+            </div>
+        </div>
+
+        <!-- Users Tab -->
+        <div id="users-tab" class="hidden fade-in">
+            <div id="adminUsersList" class="space-y-3">
+                <div class="text-center text-gray-400 py-8">Loading...</div>
+            </div>
+        </div>
+
+        <!-- Payments Tab -->
+        <div id="payments-tab" class="hidden fade-in">
+            <div id="adminPaymentsList" class="space-y-3">
+                <div class="text-center text-gray-400 py-8">Loading...</div>
+            </div>
+        </div>
+
+        <!-- Add Scholarship Tab -->
+        <div id="add-tab" class="hidden fade-in">
+            <div class="glass-card p-6 rounded-2xl">
+                <h3 class="font-bold text-lg mb-6">➕ Add New Scholarship</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="md:col-span-2">
+                        <label class="text-xs text-gray-400 uppercase tracking-wider mb-2 block">Scholarship Title</label>
+                        <input type="text" id="addTitle" placeholder="e.g. Chevening Scholarship 2026" class="input-field w-full px-4 py-3 rounded-xl">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase tracking-wider mb-2 block">Country</label>
+                        <input type="text" id="addCountry" placeholder="e.g. United Kingdom" class="input-field w-full px-4 py-3 rounded-xl">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase tracking-wider mb-2 block">Host University</label>
+                        <input type="text" id="addUniversity" placeholder="e.g. Various UK Universities" class="input-field w-full px-4 py-3 rounded-xl">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase tracking-wider mb-2 block">Category</label>
+                        <select id="addCategory" class="input-field w-full px-4 py-3 rounded-xl">
+                            <option value="fully_funded">Fully Funded</option>
+                            <option value="partial">Partial</option>
+                            <option value="erasmus">Erasmus+</option>
+                            <option value="government">Government</option>
+                            <option value="summer_school">Summer School</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase tracking-wider mb-2 block">Degree Level</label>
+                        <select id="addDegree" class="input-field w-full px-4 py-3 rounded-xl">
+                            <option value="all">All</option>
+                            <option value="undergraduate">Undergraduate</option>
+                            <option value="masters">Masters</option>
+                            <option value="phd">PhD</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase tracking-wider mb-2 block">Field of Study</label>
+                        <input type="text" id="addField" placeholder="e.g. All Fields" class="input-field w-full px-4 py-3 rounded-xl">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase tracking-wider mb-2 block">Minimum CGPA</label>
+                        <input type="number" id="addCgpa" placeholder="e.g. 3.00" min="0" max="4" step="0.01" class="input-field w-full px-4 py-3 rounded-xl">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase tracking-wider mb-2 block">Deadline</label>
+                        <input type="date" id="addDeadline" class="input-field w-full px-4 py-3 rounded-xl">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase tracking-wider mb-2 block">Application Link</label>
+                        <input type="url" id="addLink" placeholder="https://..." class="input-field w-full px-4 py-3 rounded-xl">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="text-xs text-gray-400 uppercase tracking-wider mb-2 block">Benefits</label>
+                        <textarea id="addBenefits" placeholder="e.g. Full tuition, monthly stipend, flights..." class="input-field w-full px-4 py-3 rounded-xl h-20 resize-none"></textarea>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="text-xs text-gray-400 uppercase tracking-wider mb-2 block">Eligibility</label>
+                        <textarea id="addEligibility" placeholder="e.g. Bangladesh nationals, undergraduate degree..." class="input-field w-full px-4 py-3 rounded-xl h-20 resize-none"></textarea>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="text-xs text-gray-400 uppercase tracking-wider mb-2 block">Required Documents</label>
+                        <textarea id="addDocuments" placeholder="e.g. Passport, transcripts, SOP..." class="input-field w-full px-4 py-3 rounded-xl h-20 resize-none"></textarea>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="text-xs text-gray-400 uppercase tracking-wider mb-2 block">Description</label>
+                        <textarea id="addDescription" placeholder="Brief description..." class="input-field w-full px-4 py-3 rounded-xl h-20 resize-none"></textarea>
+                    </div>
+                </div>
+                <button onclick="addScholarship()" class="mt-6 px-8 py-3 bg-indigo-600 rounded-xl font-bold hover:bg-indigo-500 transition">
+                    ➕ Add Scholarship
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Detail Modal -->
+    <div id="appDetailModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
+        <div class="glass-card max-w-2xl w-full rounded-3xl relative modal-scroll">
+            <button onclick="closeAppDetail()" class="absolute top-4 right-4 z-10 text-gray-400 hover:text-white text-2xl">✕</button>
+            <div id="appDetailContent" class="p-8"></div>
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://localhost:5000/api';
+        let token = localStorage.getItem('token');
+        let allScholarships = [];
+        let allApplications = [];
+
+        if (!token) window.location.href = 'login.html';
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (user.role !== 'admin') window.location.href = 'dashboard.html';
+
+        const statusColors = {
+            pending: 'bg-yellow-500/20 text-yellow-300',
+            reviewing: 'bg-blue-500/20 text-blue-300',
+            accepted: 'bg-green-500/20 text-green-300',
+            rejected: 'bg-red-500/20 text-red-300',
+            confirmed: 'bg-green-500/20 text-green-300',
+            cancelled: 'bg-red-500/20 text-red-300'
+        };
+
+        function showTab(name) {
+            ['scholarships', 'applications', 'users', 'payments', 'add'].forEach(t => {
+                document.getElementById(`${t}-tab`).classList.add('hidden');
+                document.getElementById(`tab-${t}`).classList.remove('active');
+                document.getElementById(`tab-${t}`).classList.add('text-gray-400');
+            });
+            document.getElementById(`${name}-tab`).classList.remove('hidden');
+            document.getElementById(`tab-${name}`).classList.add('active');
+            document.getElementById(`tab-${name}`).classList.remove('text-gray-400');
+        }
+
+        // Load scholarships
+        async function loadScholarships() {
+            try {
+                const res = await fetch(`${API}/scholarships`);
+                const data = await res.json();
+                allScholarships = data.scholarships;
+                document.getElementById('totalScholarships').textContent = allScholarships.length;
+                renderAdminScholarships(allScholarships);
+            } catch (err) { console.error(err); }
+        }
+
+        function renderAdminScholarships(list) {
+            document.getElementById('adminScholarshipsList').innerHTML = list.length === 0
+                ? '<div class="text-center text-gray-400 py-8">No scholarships found.</div>'
+                : list.map(s => `
+                <div class="glass-card p-5 rounded-2xl flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold">${s.title}</h4>
+                        <p class="text-sm text-gray-400">${s.country} • ${s.category} • ${s.degree_level}</p>
+                        <p class="text-xs text-gray-500 mt-1">Deadline: ${s.deadline ? new Date(s.deadline).toDateString() : 'Rolling'}</p>
+                    </div>
+                    <button onclick="deleteScholarship(${s.id})"
+                        class="px-3 py-2 bg-red-500/20 text-red-400 rounded-xl text-xs hover:bg-red-500/30 transition">
+                        Remove
+                    </button>
+                </div>`).join('');
+        }
+
+        function filterAdminScholarships() {
+            const search = document.getElementById('scholarshipSearch').value.toLowerCase();
+            renderAdminScholarships(allScholarships.filter(s =>
+                s.title.toLowerCase().includes(search) || s.country.toLowerCase().includes(search)
+            ));
+        }
+
+        // Load applications
+        async function loadApplications() {
+            try {
+                const res = await fetch(`${API}/applications/all`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                allApplications = data.applications || [];
+                document.getElementById('totalApplications').textContent = allApplications.length;
+                renderApplications(allApplications);
+            } catch (err) { console.error(err); }
+        }
+
+        function renderApplications(list) {
+            document.getElementById('adminApplicationsList').innerHTML = list.length === 0
+                ? '<div class="text-center text-gray-400 py-8">No applications yet.</div>'
+                : list.map(a => `
+                <div class="glass-card p-5 rounded-2xl">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <h4 class="font-bold">${a.scholarship_title}</h4>
+                            <p class="text-sm text-gray-400">${a.student_name} • ${a.student_email}</p>
+                            <p class="text-xs text-gray-500 mt-1">
+                                CGPA: ${a.student_cgpa || 'N/A'} • 
+                                ${a.degree_level || 'N/A'} • 
+                                ${a.field_of_study || 'N/A'} •
+                                Applied: ${new Date(a.applied_at).toDateString()}
+                            </p>
+                        </div>
+                        <span class="badge ${statusColors[a.status]}">${a.status}</span>
+                    </div>
+                    <div class="flex gap-2 flex-wrap">
+                        <button onclick="viewAppDetail(${a.id})"
+                            class="px-3 py-1 bg-indigo-500/20 text-indigo-400 rounded-lg text-xs hover:bg-indigo-500/30 transition">
+                            👁️ View Details
+                        </button>
+                        <button onclick="updateAppStatus(${a.id}, 'reviewing')"
+                            class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-lg text-xs hover:bg-blue-500/30 transition">
+                            Reviewing
+                        </button>
+                        <button onclick="updateAppStatus(${a.id}, 'accepted')"
+                            class="px-3 py-1 bg-green-500/20 text-green-400 rounded-lg text-xs hover:bg-green-500/30 transition">
+                            ✅ Accept
+                        </button>
+                        <button onclick="updateAppStatus(${a.id}, 'rejected')"
+                            class="px-3 py-1 bg-red-500/20 text-red-400 rounded-lg text-xs hover:bg-red-500/30 transition">
+                            ❌ Reject
+                        </button>
+                        ${a.application_link ? `
+                        <a href="${a.application_link}" target="_blank"
+                            class="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-lg text-xs hover:bg-purple-500/30 transition">
+                            🌐 Official Site
+                        </a>` : ''}
+                    </div>
+                </div>`).join('');
+        }
+
+        function filterApplications() {
+            const search = document.getElementById('appSearch').value.toLowerCase();
+            renderApplications(allApplications.filter(a =>
+                a.student_name.toLowerCase().includes(search) ||
+                a.scholarship_title.toLowerCase().includes(search) ||
+                a.student_email.toLowerCase().includes(search)
+            ));
+        }
+
+        // View application detail
+        async function viewAppDetail(id) {
+            try {
+                const res = await fetch(`${API}/applications/${id}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                const a = data.application;
+
+                const docs = a.documents_submitted || {};
+
+                document.getElementById('appDetailContent').innerHTML = `
+                    <h2 class="text-xl font-bold mb-1">Application Details</h2>
+                    <p class="text-gray-400 text-sm mb-6">${a.scholarship_title}</p>
+
+                    <div class="space-y-4">
+                        <div class="glass-card p-4 rounded-xl">
+                            <p class="text-indigo-400 font-semibold mb-3">👤 Student Profile</p>
+                            <div class="grid grid-cols-2 gap-2 text-sm">
+                                <div><p class="text-gray-500">Name</p><p class="font-medium">${a.student_name}</p></div>
+                                <div><p class="text-gray-500">Email</p><p class="font-medium">${a.student_email}</p></div>
+                                <div><p class="text-gray-500">Phone</p><p class="font-medium">${a.student_phone || 'N/A'}</p></div>
+                                <div><p class="text-gray-500">CGPA</p><p class="font-medium">${a.student_cgpa || 'N/A'}</p></div>
+                                <div><p class="text-gray-500">Degree</p><p class="font-medium capitalize">${a.degree_level || 'N/A'}</p></div>
+                                <div><p class="text-gray-500">Field</p><p class="font-medium">${a.field_of_study || 'N/A'}</p></div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-4 rounded-xl">
+                            <p class="text-cyan-400 font-semibold mb-3">📝 Personal Statement</p>
+                            <p class="text-gray-300 text-sm">${a.cover_letter || 'Not provided'}</p>
+                        </div>
+
+                        <div class="glass-card p-4 rounded-xl">
+                            <p class="text-purple-400 font-semibold mb-3">📄 Uploaded Documents</p>
+                            <div class="space-y-2">
+                                ${docs.cv ? `<a href="http://localhost:5000/uploads/${docs.cv}" target="_blank" class="flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 transition"><span>📄</span> CV/Resume</a>` : '<p class="text-gray-500 text-sm">CV: Not uploaded</p>'}
+                                ${docs.transcript ? `<a href="http://localhost:5000/uploads/${docs.transcript}" target="_blank" class="flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 transition"><span>📄</span> Academic Transcript</a>` : '<p class="text-gray-500 text-sm">Transcript: Not uploaded</p>'}
+                                ${docs.passport ? `<a href="http://localhost:5000/uploads/${docs.passport}" target="_blank" class="flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 transition"><span>📄</span> Passport Copy</a>` : '<p class="text-gray-500 text-sm">Passport: Not uploaded</p>'}
+                                ${docs.other ? `<a href="http://localhost:5000/uploads/${docs.other}" target="_blank" class="flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 transition"><span>📄</span> Other Documents</a>` : ''}
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2 flex-wrap">
+                            <button onclick="updateAppStatus(${a.id}, 'reviewing'); closeAppDetail();"
+                                class="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-xl text-sm hover:bg-blue-500/30 transition">
+                                Mark Reviewing
+                            </button>
+                            <button onclick="updateAppStatus(${a.id}, 'accepted'); closeAppDetail();"
+                                class="px-4 py-2 bg-green-500/20 text-green-400 rounded-xl text-sm hover:bg-green-500/30 transition">
+                                ✅ Accept
+                            </button>
+                            <button onclick="updateAppStatus(${a.id}, 'rejected'); closeAppDetail();"
+                                class="px-4 py-2 bg-red-500/20 text-red-400 rounded-xl text-sm hover:bg-red-500/30 transition">
+                                ❌ Reject
+                            </button>
+                        </div>
+                    </div>`;
+
+                document.getElementById('appDetailModal').classList.remove('hidden');
+            } catch (err) {
+                alert('Failed to load application details.');
+            }
+        }
+
+        function closeAppDetail() {
+            document.getElementById('appDetailModal').classList.add('hidden');
+        }
+
+        // Load users
+        async function loadUsers() {
+            try {
+                const res = await fetch(`${API}/auth/users`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                const users = data.users || [];
+                document.getElementById('totalUsers').textContent = users.length;
+
+                document.getElementById('adminUsersList').innerHTML = users.length === 0
+                    ? '<div class="text-center text-gray-400 py-8">No students yet.</div>'
+                    : users.map(u => `
+                    <div class="glass-card p-5 rounded-2xl flex justify-between items-center">
+                        <div>
+                            <h4 class="font-bold">${u.name}</h4>
+                            <p class="text-sm text-gray-400">${u.email} • ${u.phone || 'No phone'}</p>
+                            <p class="text-xs text-gray-500 mt-1">
+                                ${u.degree_level || 'N/A'} • 
+                                CGPA: ${u.cgpa || 'N/A'} • 
+                                Joined: ${new Date(u.created_at).toDateString()}
+                            </p>
+                        </div>
+                        <span class="badge ${u.profile_complete ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'}">
+                            ${u.profile_complete ? '✅ Complete' : '⚠️ Incomplete'}
+                        </span>
+                    </div>`).join('');
+            } catch (err) { console.error(err); }
+        }
+
+        // Load payments
+        async function loadPayments() {
+            try {
+                const res = await fetch(`${API}/payments/all`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                const services = data.services || [];
+                document.getElementById('totalPayments').textContent = services.length;
+
+                document.getElementById('adminPaymentsList').innerHTML = services.length === 0
+                    ? '<div class="text-center text-gray-400 py-8">No service requests yet.</div>'
+                    : services.map(s => `
+                    <div class="glass-card p-5 rounded-2xl">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h4 class="font-bold capitalize">${s.service_type.replace(/_/g, ' ')}</h4>
+                                <p class="text-sm text-gray-400">${s.student_name} • ${s.student_email}</p>
+                                <p class="text-xs text-gray-500 mt-1">
+                                    ${s.payment_method} • ${s.amount} BDT • TXN: ${s.transaction_id || 'N/A'}
+                                </p>
+                            </div>
+                            <span class="badge ${statusColors[s.payment_status] || 'bg-yellow-500/20 text-yellow-300'}">
+                                ${s.payment_status}
+                            </span>
+                        </div>
+                        ${s.payment_status === 'pending' ? `
+                        <div class="flex gap-2">
+                            <button onclick="confirmPayment(${s.id})"
+                                class="px-3 py-1 bg-green-500/20 text-green-400 rounded-lg text-xs hover:bg-green-500/30 transition">
+                                ✅ Confirm Payment
+                            </button>
+                            <button onclick="rejectPayment(${s.id})"
+                                class="px-3 py-1 bg-red-500/20 text-red-400 rounded-lg text-xs hover:bg-red-500/30 transition">
+                                ❌ Reject
+                            </button>
+                        </div>` : ''}
+                    </div>`).join('');
+            } catch (err) { console.error(err); }
+        }
+
+        // Add scholarship
+        async function addScholarship() {
+            const body = {
+                title: document.getElementById('addTitle').value,
+                country: document.getElementById('addCountry').value,
+                host_university: document.getElementById('addUniversity').value,
+                category: document.getElementById('addCategory').value,
+                degree_level: document.getElementById('addDegree').value,
+                field: document.getElementById('addField').value,
+                min_cgpa: document.getElementById('addCgpa').value,
+                deadline: document.getElementById('addDeadline').value,
+                application_link: document.getElementById('addLink').value,
+                benefits: document.getElementById('addBenefits').value,
+                eligibility: document.getElementById('addEligibility').value,
+                required_documents: document.getElementById('addDocuments').value,
+                description: document.getElementById('addDescription').value
+            };
+
+            if (!body.title || !body.country) {
+                alert('Please fill in at least the title and country.');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API}/scholarships`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+                alert(data.message);
+                loadScholarships();
+                showTab('scholarships');
+            } catch (err) { alert('Failed to add scholarship.'); }
+        }
+
+        // Delete scholarship
+        async function deleteScholarship(id) {
+            if (!confirm('Remove this scholarship?')) return;
+            try {
+                const res = await fetch(`${API}/scholarships/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                alert(data.message);
+                loadScholarships();
+            } catch (err) { alert('Failed to remove.'); }
+        }
+
+        // Update app status
+        async function updateAppStatus(id, status) {
+            try {
+                const res = await fetch(`${API}/applications/${id}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ status })
+                });
+                const data = await res.json();
+                alert(data.message);
+                loadApplications();
+            } catch (err) { alert('Failed to update.'); }
+        }
+
+        // Confirm payment
+        async function confirmPayment(id) {
+            try {
+                const res = await fetch(`${API}/payments/${id}/confirm`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                alert(data.message);
+                loadPayments();
+            } catch (err) { alert('Failed to confirm.'); }
+        }
+
+        // Reject payment
+        async function rejectPayment(id) {
+            try {
+                const res = await fetch(`${API}/payments/${id}/reject`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                alert(data.message);
+                loadPayments();
+            } catch (err) { alert('Failed to reject.'); }
+        }
+        // Run scraper manually
+async function runScraper() {
+    const btn = document.getElementById('scrapeBtn');
+    btn.textContent = '🔄 Scraping...';
+    btn.disabled = true;
+
+    try {
+        const res = await fetch(`${API}/scrape`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        alert(`✅ ${data.message}`);
+        loadScholarships();
+    } catch (err) {
+        alert('Scraper failed. Check backend logs.');
+    } finally {
+        btn.textContent = '🔄 Scrape New Scholarships';
+        btn.disabled = false;
+    }
+}
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        // Init
+        loadScholarships();
+        loadApplications();
+        loadUsers();
+        loadPayments();
+    </script>
+</body>
+</html>

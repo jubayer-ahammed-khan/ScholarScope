@@ -23,6 +23,6 @@ router.get('/all', authMiddleware, roleMiddleware('admin'), applicationControlle
 router.get('/:id', authMiddleware, roleMiddleware('admin'), applicationController.getOne);
 router.put('/:id/status', authMiddleware, roleMiddleware('admin'), applicationController.updateStatus);
 
-module.exports = router;
 // Quick apply using saved profile documents
 router.post('/quick', authMiddleware, applicationController.quickApply);
+module.exports = router;
